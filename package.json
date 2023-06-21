@@ -1,0 +1,21 @@
+{
+  "name": "monkeywrench",
+  "version": "1.0.0",
+  "description": "Backend API for Monkey Wrench Forums",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon src/index.js"
+  },
+  "keywords": [
+    "graphql",
+    "api"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@apollo/server": "^4.7.4",
+    "graphql": "^16.6.0",
+    "nodemon": "^2.0.22"
+  }
+}
