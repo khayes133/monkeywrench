@@ -3,6 +3,9 @@ const { startStandaloneServer } = require("@apollo/server/standalone");
 
 const typeDefs = `#graphql
   type User {
+    """
+    Document ID
+    """
     _id: ID!,
     username: String!,
     avatar: String,
@@ -23,36 +26,71 @@ const typeDefs = `#graphql
     threads: Int
   }
 
+  type Thread {
+    _id: ID!,
+    title: String,
+    model: ID!,
+    user: ID!,
+    created: String,
+    lastPost: ID!
+  }
+
+  type Post {
+    _id: ID!,
+    thread: ID!,
+    user: ID!,
+    created: String,
+    content: String
+  }
+
   type Query {
-    users: [User]!
+    login(token: String!): User
+    logout: User
+    user(id: ID!): User
+    users: [User]
+    model(id: ID!): Model
+    models: [Model]
+    thread(id: ID!): Thread
+    threads: [Thread]
+    post(id: ID!): Post
+    posts: [Post]
+  }
+
+  type Mutation {
+    register(token: String!): User
+    updateUser(id: ID!, user: String): User
   }
 
 `;
 
-
 // Dummy data
 const users = [
   { _id: 1, username: "test1" },
-  { _id: 2, username: "test2" },
+  { _id: 2, username: "test2" }
 ];
 
+// Example resolvers
 const resolvers = {
   Query: {
-    users: () => users,
-  },
+    user: async (args, context) => {
+      return users[args.id];
+    },
+    users: async (args, context) => {
+      // return await Users.find();
+      return users;
+    }
+  }
 };
-
-// TODO: Resolvers, Mock dataset
 
 const server = new ApolloServer({
   typeDefs,
-  resolvers,
+  resolvers
 });
 
 async function startServer() {
   // Start the server at the specified port
   const { url } = await startStandaloneServer(server, {
-    listen: { port: 4000 },
+    listen: { port: 4000 }
   });
 
   console.log(`🚀  Server ready at: ${url}`);
