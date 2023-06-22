@@ -1,67 +1,6 @@
 const { ApolloServer } = require("@apollo/server");
 const { startStandaloneServer } = require("@apollo/server/standalone");
-
-const typeDefs = `#graphql
-  type User {
-    """
-    Document ID
-    """
-    _id: ID!,
-    username: String!,
-    avatar: String,
-    thumbnail: String,
-    email: String!,
-    role: Int,
-    posts: Int,
-    threads: Int,
-    joined: String,
-    lastOnline: String
-  }
-
-  type Model {
-    _id: ID!,
-    model: String!,
-    make: String!,
-    thumbnail: String,
-    threads: Int
-  }
-
-  type Thread {
-    _id: ID!,
-    title: String,
-    model: ID!,
-    user: ID!,
-    created: String,
-    lastPost: ID!
-  }
-
-  type Post {
-    _id: ID!,
-    thread: ID!,
-    user: ID!,
-    created: String,
-    content: String
-  }
-
-  type Query {
-    login(token: String!): User
-    logout: User
-    user(id: ID!): User
-    users: [User]
-    model(id: ID!): Model
-    models: [Model]
-    thread(id: ID!): Thread
-    threads: [Thread]
-    post(id: ID!): Post
-    posts: [Post]
-  }
-
-  type Mutation {
-    register(token: String!): User
-    updateUser(id: ID!, user: String): User
-  }
-
-`;
+const typeDefs = require("./graphql/schema");
 
 // Dummy data
 const users = [
