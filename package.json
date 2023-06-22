@@ -20,8 +20,8 @@
   },
   "homepage": "https://github.com/khayes133/monkeywrench#readme",
   "devDependencies": {
-    "nodemon": "^2.0.22",
     "eslint": "^8.43.0",
+    "nodemon": "^2.0.22",
     "prettier": "^2.8.8"
   },
   "dependencies": {
