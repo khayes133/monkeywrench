@@ -9,6 +9,7 @@ const users = [
 ];
 
 // Example resolvers
+// testing from valencia branch
 const resolvers = {
   Query: {
     user: async (args, context) => {
