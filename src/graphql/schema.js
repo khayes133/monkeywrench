@@ -31,7 +31,7 @@ const typeDefs = `#graphql
   }
   
   """
-  Use this for User quer input
+  Use this for User query input
   """
   input UserInput {
     username: String,
@@ -180,4 +180,23 @@ const typeDefs = `#graphql
 
 `;
 
-module.exports = typeDefs;
+// Dummy data
+const users = [
+  { _id: 1, username: "test1" },
+  { _id: 2, username: "test2" }
+];
+
+// Example resolvers
+const resolvers = {
+  Query: {
+    user: async (args, context) => {
+      return users[args.id];
+    },
+    users: async (args, context) => {
+      // return await Users.find();
+      return users;
+    }
+  }
+};
+
+module.exports = { typeDefs, resolvers };
