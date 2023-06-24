@@ -7,7 +7,7 @@ const users = [
   { _id: 1, username: "test1" },
   { _id: 2, username: "test2" }
 ];
-
+// testing juan valencia
 // Example resolvers
 const resolvers = {
   Query: {
