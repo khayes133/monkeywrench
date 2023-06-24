@@ -1,13 +1,23 @@
+const { ApolloServer } = require("@apollo/server");
+const { makeExecutableSchema } = require("@graphql-tools/schema");
 const express = require("express");
-const { ApolloServer } = require("apollo-server-express");
 const { typeDefs, resolvers } = require("./graphql/schema");
 const app = express();
 
 async function startServer() {
-  const server = new ApolloServer({ typeDefs, resolvers, introspection: true });
+  const server = new ApolloServer({
+    schema: makeExecutableSchema({
+      typeDefs,
+      resolvers
+    }),
+    introspection: true
+  });
+  
+  // Start the server
   await server.start();
-
-  const graphqlPath = "/api/graphql";
+  
+  // Set the path for api calls
+  const graphqlPath = "/api";
   server.applyMiddleware({ app, path: graphqlPath });
 
   const port = 4000;
