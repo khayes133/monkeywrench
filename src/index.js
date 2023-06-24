@@ -1,6 +1,7 @@
 const { ApolloServer } = require("@apollo/server");
 const { startStandaloneServer } = require("@apollo/server/standalone");
 const typeDefs = require("./graphql/schema");
+const { makeExecutableSchema } = require("@graphql-tools/schema");
 
 // Dummy data
 const users = [
@@ -23,8 +24,10 @@ const resolvers = {
 };
 
 const server = new ApolloServer({
-  typeDefs,
-  resolvers,
+  schema: makeExecutableSchema({
+    typeDefs,
+    resolvers
+  }),
   introspection: true
 });
 
