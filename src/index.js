@@ -4,7 +4,7 @@ const { typeDefs, resolvers } = require("./graphql/schema");
 const app = express();
 
 async function startServer() {
-  const server = new ApolloServer({ typeDefs, resolvers, introspection: true });
+  const server = new ApolloServer({ typeDefs, resolvers, introspection: true, playground: true });
   await server.start();
 
   const graphqlPath = "/api/graphql";
