@@ -24,7 +24,8 @@ const resolvers = {
 
 const server = new ApolloServer({
   typeDefs,
-  resolvers
+  resolvers,
+  introspection: true
 });
 
 async function startServer() {
