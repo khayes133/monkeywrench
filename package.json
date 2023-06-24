@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon src/index.js",
+    "start": "node src/index.js",
     "lint": "eslint src/*.js",
     "format": "prettier src/* --ignore-path ./.gitignore"
   },
@@ -21,16 +21,16 @@
   "homepage": "https://github.com/khayes133/monkeywrench#readme",
   "devDependencies": {
     "eslint": "^8.43.0",
-    "nodemon": "^2.0.22",
     "prettier": "^2.8.8"
   },
   "dependencies": {
-    "@apollo/server": "^4.7.4",
+    "apollo-server-express": "^3.12.0",
+    "express": "^4.18.2",
     "graphql": "^16.6.0",
     "mongodb": "^5.6.0",
     "mongoose": "^7.3.0"
   },
   "engines": {
-    "node": ">=18.0.0" 
+    "node": ">=18.0.0"
   }
 }
