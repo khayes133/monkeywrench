@@ -1,38 +1,19 @@
-const { ApolloServer } = require("@apollo/server");
-const { startStandaloneServer } = require("@apollo/server/standalone");
-const typeDefs = require("./graphql/schema");
-
-// Dummy data
-const users = [
-  { _id: 1, username: "test1" },
-  { _id: 2, username: "test2" }
-];
-
-// Example resolvers
-const resolvers = {
-  Query: {
-    user: async (args, context) => {
-      return users[args.id];
-    },
-    users: async (args, context) => {
-      // return await Users.find();
-      return users;
-    }
-  }
-};
-
-const server = new ApolloServer({
-  typeDefs,
-  resolvers
-});
+const express = require("express");
+const { ApolloServer } = require("apollo-server-express");
+const { typeDefs, resolvers } = require("./graphql/schema");
+const app = express();
 
 async function startServer() {
-  // Start the server at the specified port
-  const { url } = await startStandaloneServer(server, {
-    listen: { port: 4000 }
-  });
+  const server = new ApolloServer({ typeDefs, resolvers, introspection: true });
+  await server.start();
 
-  console.log(`🚀  Server ready at: ${url}`);
+  const graphqlPath = "/api/graphql";
+  server.applyMiddleware({ app, path: graphqlPath });
+
+  const port = 4000;
+  app.listen(port, () => {
+    console.log(`🚀 Server running on http://localhost:${port}${graphqlPath}`);
+  });
 }
 
 startServer();
