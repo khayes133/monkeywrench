@@ -9,6 +9,7 @@ const users = [
 ];
 
 // Example resolvers
+// testing from valencia branch
 const resolvers = {
   Query: {
     user: async (args, context) => {
@@ -23,7 +24,8 @@ const resolvers = {
 
 const server = new ApolloServer({
   typeDefs,
-  resolvers
+  resolvers,
+  introspection: true
 });
 
 async function startServer() {
