@@ -19,6 +19,7 @@ const typeDefs = `#graphql
   Use this for query responses
   """
   type UserPayload {
+    _id:ID
     username: String!,
     avatar: String,
     thumbnail: String,
@@ -38,11 +39,6 @@ const typeDefs = `#graphql
     avatar: String,
     thumbnail: String,
     email: String,
-    role: Int,
-    posts: Int,
-    threads: Int,
-    joined: String,
-    lastOnline: String
   }
 
   """
@@ -60,6 +56,7 @@ const typeDefs = `#graphql
   Use this for Model Query responses
   """
   type ModelPayload {
+    _id: ID
     model: String,
     make: String,
     thumbnail: String,
@@ -73,7 +70,6 @@ const typeDefs = `#graphql
     model: String,
     make: String,
     thumbnail: String,
-    threads: Int
   }
 
   """
@@ -92,6 +88,7 @@ const typeDefs = `#graphql
   Use this for Thread query payloads
   """
   type ThreadPayload {
+    _id: ID
     title: String,
     model: ID,
     user: ID,
@@ -105,8 +102,6 @@ const typeDefs = `#graphql
   input ThreadInput {
     title: String,
     model: ID,
-    user: ID,
-    created: String,
     lastPost: ID
   }
 
@@ -125,6 +120,7 @@ const typeDefs = `#graphql
   Use this for Post query payloads
   """
   type PostPayload {
+    _id: ID
     title: String,
     model: ID,
     user: ID,
@@ -138,7 +134,6 @@ const typeDefs = `#graphql
   input PostInput {
     thread: ID,
     user: ID,
-    created: String,
     content: String
   }
 
@@ -153,14 +148,16 @@ const typeDefs = `#graphql
   type Query {
     login(token: String!): UserPayload
     logout: UserPayload
-    user(id: ID!): UserPayload
-    users: [UserPayload]
-    model(id: ID!): ModelPayload
-    models: [ModelPayload]
-    thread(id: ID!): ThreadPayload
-    threads: [ThreadPayload]
-    post(id: ID!): PostPayload
-    posts: [PostPayload]
+    getUserByID(id: ID!): UserPayload
+    getUsers: [UserPayload]
+    getModelByID(id: ID!): ModelPayload
+    getModels: [ModelPayload]
+    getThreadByID(id: ID!): ThreadPayload
+    getThreads: [ThreadPayload]
+    getThreadsByModel(id: ID!): [ThreadPayload]
+    getPostByID(id: ID!): PostPayload
+    getPosts: [PostPayload]
+    getPostsByThread(id: ID!): [PostPayload]
   }
 
   type Mutation {
@@ -180,23 +177,4 @@ const typeDefs = `#graphql
 
 `;
 
-// Dummy data
-const users = [
-  { _id: 1, username: "test1" },
-  { _id: 2, username: "test2" }
-];
-
-// Example resolvers
-const resolvers = {
-  Query: {
-    user: async (args, context) => {
-      return users[args.id];
-    },
-    users: async (args, context) => {
-      // return await Users.find();
-      return users;
-    }
-  }
-};
-
-module.exports = { typeDefs, resolvers };
+module.exports = typeDefs;
