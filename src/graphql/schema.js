@@ -153,28 +153,34 @@ const typeDefs = `#graphql
   logout: UserPayload
 
   """ Get a user by ID"""
-  user(id: ID!): UserPayload
+  getUserByID(id: ID!): UserPayload
 
   """ Get a list of all users"""
-  users: [UserPayload]
+  getUsers: [UserPayload]
 
   """ Get a model by ID"""
-  model(id: ID!): ModelPayload
+  getModelByID(id: ID!): ModelPayload
 
   """ Get a list of all models"""
-  models: [ModelPayload]
+  getModels: [ModelPayload]
 
   """ Get a thread by ID"""
-  thread(id: ID!): ThreadPayload
+  getThreadByID(id: ID!): ThreadPayload
 
   """ Get a list of all threads"""
-  threads: [ThreadPayload]
+  getThreads: [ThreadPayload]
+
+  """ Get all threads belonging to a car model """
+  getThreadsByModel(id: ID!): [ThreadPayload]
 
   """ Get a post by ID"""
-  post(id: ID!): PostPayload
+  getPostByID(id: ID!): PostPayload
 
   """ Get a list of all posts"""
-  posts: [PostPayload]
+  getPosts: [PostPayload]
+
+  """ Get all posts belonging to a Thread """
+  getPostsByThread(id: ID!): [PostPayload]
 }
 
   type Mutation {
