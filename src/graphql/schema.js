@@ -151,32 +151,76 @@ const typeDefs = `#graphql
   }
 
   type Query {
-    login(token: String!): UserPayload
-    logout: UserPayload
-    user(id: ID!): UserPayload
-    users: [UserPayload]
-    model(id: ID!): ModelPayload
-    models: [ModelPayload]
-    thread(id: ID!): ThreadPayload
-    threads: [ThreadPayload]
-    post(id: ID!): PostPayload
-    posts: [PostPayload]
-  }
+  """ Login with a token """
+  login(token: String!): UserPayload
+
+  """ Logout the currently logged-in user"""
+  logout: UserPayload
+
+  """ Get a user by ID"""
+  user(id: ID!): UserPayload
+
+  """ Get a list of all users"""
+  users: [UserPayload]
+
+  """ Get a model by ID"""
+  model(id: ID!): ModelPayload
+
+  """ Get a list of all models"""
+  models: [ModelPayload]
+
+  """ Get a thread by ID"""
+  thread(id: ID!): ThreadPayload
+
+  """ Get a list of all threads"""
+  threads: [ThreadPayload]
+
+  """ Get a post by ID"""
+  post(id: ID!): PostPayload
+
+  """ Get a list of all posts"""
+  posts: [PostPayload]
+}
+
 
   type Mutation {
-    register(token: String!): UserPayload
-    updateUser(id: ID!, input: UserInput!): UserPayload
-    deleteUser(id: ID!): DeletePayload
-    createModel(input: ModelInput!): ModelPayload
-    updateModel(id: ID!, input: ModelInput!): ModelPayload
-    deleteModel(id: ID!): DeletePayload
-    createThread(input: ThreadInput!): ThreadPayload
-    updateThread(id: ID!, input: ThreadInput!): ThreadPayload
-    deleteThread(id: ID!): DeletePayload
-    createPost(input: PostInput!): PostPayload
-    updatePost(id: ID!, input: PostInput!): PostPayload
-    deletePost(id: ID!): DeletePayload
-  }
+  """ Register a user with a token"""
+  register(token: String!): UserPayload
+
+  """Update a user by ID"""
+  updateUser(id: ID!, input: UserInput!): UserPayload
+
+  """Delete a user by ID"""
+  deleteUser(id: ID!): DeletePayload
+
+  """ Create a model"""
+  createModel(input: ModelInput!): ModelPayload
+
+  """ Update a model by ID"""
+  updateModel(id: ID!, input: ModelInput!): ModelPayload
+
+  """ Delete a model by ID"""
+  deleteModel(id: ID!): DeletePayload
+
+  """Create a thread"""
+  createThread(input: ThreadInput!): ThreadPayload
+
+  """ Update a thread by ID"""
+  updateThread(id: ID!, input: ThreadInput!): ThreadPayload
+
+  """ Delete a thread by ID"""
+  deleteThread(id: ID!): DeletePayload
+
+  """Create a post"""
+  createPost(input: PostInput!): PostPayload
+
+  """ Update a post by ID"""
+  updatePost(id: ID!, input: PostInput!): PostPayload
+
+  """Delete a post by ID"""
+  deletePost(id: ID!): DeletePayload
+}
+
 
 `;
 
