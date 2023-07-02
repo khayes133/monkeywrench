@@ -146,34 +146,81 @@ const typeDefs = `#graphql
   }
 
   type Query {
-    login(token: String!): UserPayload
-    logout: UserPayload
-    getUserByID(id: ID!): UserPayload
-    getUsers: [UserPayload]
-    getModelByID(id: ID!): ModelPayload
-    getModels: [ModelPayload]
-    getThreadByID(id: ID!): ThreadPayload
-    getThreads: [ThreadPayload]
-    getThreadsByModel(id: ID!): [ThreadPayload]
-    getPostByID(id: ID!): PostPayload
-    getPosts: [PostPayload]
-    getPostsByThread(id: ID!): [PostPayload]
-  }
+  """ Login with a token """
+  login(token: String!): UserPayload
+
+  """ Logout the currently logged-in user"""
+  logout: UserPayload
+
+  """ Get a user by ID"""
+  getUserByID(id: ID!): UserPayload
+
+  """ Get a list of all users"""
+  getUsers: [UserPayload]
+
+  """ Get a model by ID"""
+  getModelByID(id: ID!): ModelPayload
+
+  """ Get a list of all models"""
+  getModels: [ModelPayload]
+
+  """ Get a thread by ID"""
+  getThreadByID(id: ID!): ThreadPayload
+
+  """ Get a list of all threads"""
+  getThreads: [ThreadPayload]
+
+  """ Get all threads belonging to a car model """
+  getThreadsByModel(id: ID!): [ThreadPayload]
+
+  """ Get a post by ID"""
+  getPostByID(id: ID!): PostPayload
+
+  """ Get a list of all posts"""
+  getPosts: [PostPayload]
+
+  """ Get all posts belonging to a Thread """
+  getPostsByThread(id: ID!): [PostPayload]
+}
 
   type Mutation {
-    register(token: String!): UserPayload
-    updateUser(id: ID!, input: UserInput!): UserPayload
-    deleteUser(id: ID!): DeletePayload
-    createModel(input: ModelInput!): ModelPayload
-    updateModel(id: ID!, input: ModelInput!): ModelPayload
-    deleteModel(id: ID!): DeletePayload
-    createThread(input: ThreadInput!): ThreadPayload
-    updateThread(id: ID!, input: ThreadInput!): ThreadPayload
-    deleteThread(id: ID!): DeletePayload
-    createPost(input: PostInput!): PostPayload
-    updatePost(id: ID!, input: PostInput!): PostPayload
-    deletePost(id: ID!): DeletePayload
-  }
+  """ Register a user with a token"""
+  register(token: String!): UserPayload
+
+  """Update a user by ID"""
+  updateUser(id: ID!, input: UserInput!): UserPayload
+
+  """Delete a user by ID"""
+  deleteUser(id: ID!): DeletePayload
+
+  """ Create a model"""
+  createModel(input: ModelInput!): ModelPayload
+
+  """ Update a model by ID"""
+  updateModel(id: ID!, input: ModelInput!): ModelPayload
+
+  """ Delete a model by ID"""
+  deleteModel(id: ID!): DeletePayload
+
+  """Create a thread"""
+  createThread(input: ThreadInput!): ThreadPayload
+
+  """ Update a thread by ID"""
+  updateThread(id: ID!, input: ThreadInput!): ThreadPayload
+
+  """ Delete a thread by ID"""
+  deleteThread(id: ID!): DeletePayload
+
+  """Create a post"""
+  createPost(input: PostInput!): PostPayload
+
+  """ Update a post by ID"""
+  updatePost(id: ID!, input: PostInput!): PostPayload
+
+  """Delete a post by ID"""
+  deletePost(id: ID!): DeletePayload
+}
+
 
 `;
 
