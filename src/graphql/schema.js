@@ -19,6 +19,7 @@ const typeDefs = `#graphql
   Use this for query responses
   """
   type UserPayload {
+    _id:ID
     username: String!,
     avatar: String,
     thumbnail: String,
@@ -31,18 +32,13 @@ const typeDefs = `#graphql
   }
   
   """
-  Use this for User quer input
+  Use this for User query input
   """
   input UserInput {
     username: String,
     avatar: String,
     thumbnail: String,
     email: String,
-    role: Int,
-    posts: Int,
-    threads: Int,
-    joined: String,
-    lastOnline: String
   }
 
   """
@@ -60,6 +56,7 @@ const typeDefs = `#graphql
   Use this for Model Query responses
   """
   type ModelPayload {
+    _id: ID
     model: String,
     make: String,
     thumbnail: String,
@@ -73,7 +70,6 @@ const typeDefs = `#graphql
     model: String,
     make: String,
     thumbnail: String,
-    threads: Int
   }
 
   """
@@ -92,6 +88,7 @@ const typeDefs = `#graphql
   Use this for Thread query payloads
   """
   type ThreadPayload {
+    _id: ID
     title: String,
     model: ID,
     user: ID,
@@ -105,8 +102,6 @@ const typeDefs = `#graphql
   input ThreadInput {
     title: String,
     model: ID,
-    user: ID,
-    created: String,
     lastPost: ID
   }
 
@@ -125,6 +120,7 @@ const typeDefs = `#graphql
   Use this for Post query payloads
   """
   type PostPayload {
+    _id: ID
     title: String,
     model: ID,
     user: ID,
@@ -138,7 +134,6 @@ const typeDefs = `#graphql
   input PostInput {
     thread: ID,
     user: ID,
-    created: String,
     content: String
   }
 
@@ -181,7 +176,6 @@ const typeDefs = `#graphql
   """ Get a list of all posts"""
   posts: [PostPayload]
 }
-
 
   type Mutation {
   """ Register a user with a token"""
