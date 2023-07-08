@@ -3,175 +3,237 @@ const Thread = require("../models/threads");
 const Post = require("../models/posts");
 const User = require("../models/users");
 
-async function updateThreadCount(modelID) {
-  const model = await Model.findById(modelID);
-  await model.update( {threads: +model.threads});
-  await model.save();
+async function updateModelThreadCount(modelID, subtract = false) {
+  try {
+    const model = await Model.findById(modelID);
+    subtract ? --model.threads : ++model.threads;
+    await model.save();
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+async function updateThreadPostCount(threadID, subtract = false) {
+  try {
+    const thread = await Thread.findById(threadID);
+    subtract ? --thread.posts : ++thread.posts;
+    await thread.save();
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+async function updateUserThreadCount(id, subtract = false) {
+  try {
+    const user = await User.findById(id);
+    subtract ? --user.threads : ++user.threads;
+    await user.save();
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+async function updateUserPostCount(id, subtract = false) {
+  try {
+    const user = await User.findById(id);
+    subtract ? --user.posts : ++user.posts;
+    await user.save();
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 const resolvers = {
-  Query: {
-    getUserByID: async (root, args, context, info) => {
-      // Example user query using context
-      try {
-        return await User.find({ _id: context.userID });
-      } catch (error) {
-        console.log(error);
-        throw new Error("Error fetching user");
-      }
-    },
-    getModelByID: async (root, args, context, info) => {
-      try {
-        return await Model.findById(args.id);
-      } catch (error) {
-        console.log(error);
-        throw new Error("Error fetching model");
-      }
-    },
-    getModels: async (root, args, context, info) => {
-      try {
-        return await Model.find();
-      } catch (error) {
-        console.log(error);
-        throw new Error("Error fetching models");
-      }
-    },
-    getThreadsByModel: async (root, args, context, info) => {
-      try {
-        return await Thread.find({ model: args.id });
-      } catch (error) {
-        console.log(error);
-        throw new Error("Error fetching threads");
-      }
-    },
-    getThreadByID: async (root, args, context, info) => {
-      try {
-        return await Thread.findById(args.id);
-      } catch (error) {
-        console.log(error);
-        throw new Error("Error fetching thread");
-      }
-    },
-    getPostsByThread: async (root, args, context, info) => {
-      try {
-        return await Post.find({ thread: args.id });
-      } catch (error) {
-        console.log(error);
-        throw new Error("Error fetching posts");
-      }
-    },
-    getPostByID: async (root, args, context, info) => {
-      try {
-        return await Post.findById(args.id);
-      } catch (error) {
-        console.log(error);
-        throw new Error("Error fetching post");
-      }
+  getUserByID: async (args, context) => {
+    try {
+      return await User.findById(args.id);
+    } catch (error) {
+      console.log(error);
+      throw new Error("Error fetching user");
     }
   },
-  Mutation: {
-    createModel: async (root, args, context, info) => {
-      try {
-        const model = new Model({
-          ...args.input
-        });
-        return await model.save();
-      } catch (error) {
-        console.log(error);
-        throw new Error("Error creating model");
+  getModelByID: async (args, context) => {
+    try {
+      return await Model.findById(args.id);
+    } catch (error) {
+      console.log(error);
+      throw new Error("Error fetching model");
+    }
+  },
+  getModels: async (args, context) => {
+    try {
+      return await Model.find();
+    } catch (error) {
+      console.log(error);
+      throw new Error("Error fetching models");
+    }
+  },
+  getThreadsByModel: async (args, context) => {
+    try {
+      return await Thread.find({ model: args.id });
+    } catch (error) {
+      console.log(error);
+      throw new Error("Error fetching threads");
+    }
+  },
+  getThreadByID: async (args, context) => {
+    try {
+      return await Thread.findById(args.id);
+    } catch (error) {
+      console.log(error);
+      throw new Error("Error fetching thread");
+    }
+  },
+  getPostsByThread: async (args, context) => {
+    try {
+      return await Post.find({ thread: args.id });
+    } catch (error) {
+      console.log(error);
+      throw new Error("Error fetching posts");
+    }
+  },
+  getPostByID: async (args, context) => {
+    try {
+      return await Post.findById(args.id);
+    } catch (error) {
+      console.log(error);
+      throw new Error("Error fetching post");
+    }
+  },
+  register: async (args, context) => {
+    try {
+      const userData = context.user;
+      const newUser = new User({
+        email: userData.email,
+        joined: new Date(),
+        lastOnline: new Date(),
+        role: 1,
+        posts: 0,
+        threads: 0,
+        sub: userData.sub
+      });
+      return await newUser.save();
+    } catch (error) {
+      console.log(error);
+      throw new Error("Error registering user");
+    }
+  },
+  updateUser: async (args, context) => {
+    try {
+      const userData = context.user;
+      return await User.findOneAndUpdate({ sub: userData.sub }, { ...args.input });
+    } catch (error) {
+      console.log(error);
+      throw new Error("Error updating user");
+    }
+  },
+  createModel: async (args, context) => {
+    try {
+      const model = new Model({
+        ...args.input
+      });
+      return await model.save();
+    } catch (error) {
+      console.log(error);
+      throw new Error("Error creating model");
+    }
+  },
+  updateModel: async (args, context) => {
+    try {
+      return await Model.findByIdAndUpdate(args.id, { ...args.input });
+    } catch (error) {
+      console.log(error);
+      throw new Error("Error updating model");
+    }
+  },
+  deleteModel: async (args, context) => {
+    try {
+      const result = await Model.findByIdAndDelete(args.id);
+      if (result) {
+        return { success: true };
+      } else {
+        return { success: false, message: "No model found" };
       }
-    },
-    updateModel: async (root, args, context, info) => {
-      try {
-        return await Model.findByIdAndUpdate(args.id, { ...args.input });
-      } catch (error) {
-        console.log(error);
-        throw new Error("Error updating model");
+    } catch (error) {
+      console.log(error);
+      throw new Error("Error deleting model");
+    }
+  },
+  createThread: async (args, context) => {
+    try {
+      const user = await User.findOne({ sub: context.user.sub });
+      const thread = new Thread({
+        ...args.input,
+        created: new Date(),
+        user: user.id
+      });
+      updateModelThreadCount(args.input.model);
+      updateUserThreadCount(user.id);
+      return await thread.save();
+    } catch (err) {
+      console.log(err);
+      throw new Error("Error creating thread");
+    }
+  },
+  updateThread: async (args, context) => {
+    try {
+      return await Thread.findByIdAndUpdate(args.id, { ...args.input });
+    } catch (error) {
+      console.log(error);
+      throw new Error("Error updating thread");
+    }
+  },
+  deleteThread: async (args, context) => {
+    try {
+      const result = await Thread.findByIdAndDelete(args.id);
+      if (result) {
+        updateModelThreadCount(result.model, true);
+        return { success: true };
+      } else {
+        return { success: false, message: "No thread found" };
       }
-    },
-    deleteModel: async (root, args, context, info) => {
-      try {
-        const result = await Model.findByIdAndDelete(args.id);
-        if (result) {
-          return { success: true };
-        } else {
-          return { success: false, message: "No model found" };
-        }
-      } catch (error) {
-        console.log(error);
-        throw new Error("Error deleting model");
+    } catch (error) {
+      console.log(error);
+      throw new Error("Error deleting thread");
+    }
+  },
+  createPost: async (args, context) => {
+    try {
+      const user =  await User.findOne({sub: context.user.sub});
+      const post = new Post({
+        ...args.input,
+        created: new Date(),
+        user: user.id
+      });
+      updateThreadPostCount(args.input.thread);
+      updateUserPostCount(user.id);
+      return await post.save();
+    } catch (error) {
+      console.log(error);
+      throw new Error("Error creating post");
+    }
+  },
+  updatePost: async (args, context) => {
+    try {
+      return await Post.findByIdAndUpdate(args.id, args.input);
+    } catch (error) {
+      console.log(error);
+      throw new Error("Error updating post");
+    }
+  },
+  deletePost: async (args, context) => {
+    try {
+      const result = await Post.findByIdAndDelete(args.id);
+      if (result) {
+        updateThreadPostCount(result.thread, true);
+        updateUserPostCount(result.user, true);
+        return { success: true };
+      } else {
+        return { success: false, message: "No post found" };
       }
-    },
-    createThread: async (root, args, context, info) => {
-      try {
-        const id = context.userID;
-        const thread = new Thread({
-          ...args.input,
-          created: new Date(),
-          user: id
-        });
-        updateThreadCount(args.input.model);
-        return await thread.save();
-      } catch (err) {
-        console.log(err);
-        throw new Error("Error creating thread");
-      }
-    },
-    updateThread: async (root, args, context, info) => {
-      try {
-        return await Thread.findByIdAndUpdate(args.id, {...args.input});
-      } catch (error) {
-        console.log(error);
-        throw new Error("Error updating thread");
-      }
-    },
-    deleteThread: async (root, args, context, info) => {
-      try {
-        const result = await Thread.findByIdAndDelete(args.id);
-        if (result) {
-          return { success: true };
-        } else {
-          return { success: false, message: "No thread found"};
-        }
-      } catch (error) {
-        console.log(error);
-        throw new Error("Error deleting thread");
-      }
-    },
-    createPost: async (root, args, context, info) => {
-      try {
-        const id = context.userID;
-        const post = new Post({
-          ...args.input,
-          created: new Date(),
-          user: id
-        });
-        return await post.save();
-      } catch (error) {
-        console.log(error);
-        throw new Error("Error creating post");
-      }
-    },
-    updatePost: async (root, args, context, info) => {
-      try {
-        return await Post.findByIdAndUpdate(args.id, args.input);
-      } catch (error) {
-        console.log(error);
-        throw new Error("Error updating post");
-      }
-    },
-    deletePost: async (root, args, context, info) => {
-      try {
-        const result = await Post.findByIdAndDelete(args.id);
-        if (result) {
-          return {success: true};
-        } else  {
-          return {success: false, message: "No post found"};
-        }
-      } catch (error) {
-        console.log(error);
-        throw new Error("Error deleting post");
-      }
+    } catch (error) {
+      console.log(error);
+      throw new Error("Error deleting post");
     }
   }
 };
