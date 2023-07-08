@@ -1,7 +1,6 @@
 const { Schema, model } = require("mongoose");
 
 const postSchema = Schema({
-  _id: String,
   thread: String,
   user: String,
   created: Date,

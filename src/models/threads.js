@@ -1,7 +1,6 @@
 const { Schema, model } = require("mongoose");
 
 const threadSchema = Schema({
-  _id: String,
   title: String,
   model: String,
   user: String,

@@ -1,4 +1,6 @@
-const typeDefs = `#graphql
+const { buildSchema } = require("graphql/utilities");
+
+const typeDefs = buildSchema(`#graphql
   """
   This is the base User document schema
   """
@@ -19,7 +21,6 @@ const typeDefs = `#graphql
   Use this for query responses
   """
   type UserPayload {
-    _id:ID
     username: String!,
     avatar: String,
     thumbnail: String,
@@ -38,7 +39,6 @@ const typeDefs = `#graphql
     username: String,
     avatar: String,
     thumbnail: String,
-    email: String,
   }
 
   """
@@ -120,12 +120,11 @@ const typeDefs = `#graphql
   Use this for Post query payloads
   """
   type PostPayload {
-    _id: ID
-    title: String,
-    model: ID,
+    _id: ID,
+    content: String,
     user: ID,
     created: String,
-    lastPost: ID
+    thread: ID
   }
 
   """
@@ -133,7 +132,6 @@ const typeDefs = `#graphql
   """
   input PostInput {
     thread: ID,
-    user: ID,
     content: String
   }
 
@@ -146,17 +144,8 @@ const typeDefs = `#graphql
   }
 
   type Query {
-  """ Login with a token """
-  login(token: String!): UserPayload
-
-  """ Logout the currently logged-in user"""
-  logout: UserPayload
-
   """ Get a user by ID"""
   getUserByID(id: ID!): UserPayload
-
-  """ Get a list of all users"""
-  getUsers: [UserPayload]
 
   """ Get a model by ID"""
   getModelByID(id: ID!): ModelPayload
@@ -185,10 +174,10 @@ const typeDefs = `#graphql
 
   type Mutation {
   """ Register a user with a token"""
-  register(token: String!): UserPayload
+  register: UserPayload
 
   """Update a user by ID"""
-  updateUser(id: ID!, input: UserInput!): UserPayload
+  updateUser(input: UserInput!): UserPayload
 
   """Delete a user by ID"""
   deleteUser(id: ID!): DeletePayload
@@ -221,7 +210,6 @@ const typeDefs = `#graphql
   deletePost(id: ID!): DeletePayload
 }
 
-
-`;
+`);
 
 module.exports = typeDefs;
