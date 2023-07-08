@@ -1,7 +1,6 @@
 const { Schema, model } = require("mongoose");
 
 const userSchema = new Schema({
-  id: String,
   username: String,
   avatar: String,
   thumbnail: String,
@@ -10,9 +9,10 @@ const userSchema = new Schema({
   posts: Number,
   threads: Number,
   joined: Date,
-  lastOnline: Date
+  lastOnline: Date,
+  sub: String,
 });
 
-const userModel = model("Users", userSchema);
+const User = model("users", userSchema);
 
-module.exports = userModel;
+module.exports = User;
