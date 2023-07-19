@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 require("dotenv").config();
 const app = express();
 
+//set up routes
 app.use("/", router);
 
 // Connect to mongoose and start the express server

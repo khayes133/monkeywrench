@@ -6,6 +6,7 @@ const typeDefs = require("../graphql/schema");
 const resolvers = require("../graphql/resolvers");
 require("dotenv").config();
 
+//Configuration for OpenID Connect
 const config = {
   authRequired: false,
   auth0Logout: true,
@@ -15,13 +16,13 @@ const config = {
   issuerBaseURL: "https://dev-48o0hvsw8l1c35rp.us.auth0.com"
 };
 
-// auth router attaches /login, /logout, and /callback routes to the baseURL
+//Attach authentication middleware to the router
 router.use(auth(config));
 
-// req.isAuthenticated is provided from the auth router
+// Route handler for the root path
 router.get("/", checkAuth);
 
-// Set the path for api calls
+// Route handler for GraphQL API
 router.use(
   "/graphql",
   requiresAuth(),
@@ -37,6 +38,7 @@ router.use(
   })
 );
 
+//Function to check authentication status
 function checkAuth(req, res) {
   res.send(req.oidc.isAuthenticated() ? "Logged in" : "Logged out");
 }

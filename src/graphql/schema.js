@@ -1,6 +1,11 @@
 const { buildSchema } = require("graphql/utilities");
 
+//Define the GraphQL schema for the API
+
+
 const typeDefs = buildSchema(`#graphql
+
+// User type represents a user document in the database
   """
   This is the base User document schema
   """

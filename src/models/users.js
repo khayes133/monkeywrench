@@ -1,5 +1,6 @@
 const { Schema, model } = require("mongoose");
 
+// Define the schema for the User collection
 const userSchema = new Schema({
   username: String,
   avatar: String,
@@ -13,6 +14,7 @@ const userSchema = new Schema({
   sub: String,
 });
 
+// Create the User model using the schema
 const User = model("users", userSchema);
 
 module.exports = User;

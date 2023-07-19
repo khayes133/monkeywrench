@@ -1,7 +1,17 @@
+/*This code provides a set of resolver functions that interact 
+with the database models to handle GraphQL queries and mutations
+related to users, models, threads, and posts*/
+
+//Importing Dependencies from "../models" directory
 const Model = require("../models/models");
 const Thread = require("../models/threads");
 const Post = require("../models/posts");
 const User = require("../models/users");
+
+/*Utility Functions that update the counts of threads and posts 
+associated with models and users in the database. The functions
+take an ID parameter and an optional boolean parameter 'subtract'
+which determines whether to increment or decrement the count*/
 
 async function updateModelThreadCount(modelID, subtract = false) {
   try {
@@ -42,7 +52,9 @@ async function updateUserPostCount(id, subtract = false) {
     console.log(error);
   }
 }
-
+/*Resolver Functions correspond to different GraphQL queries and mutations.
+Each resolver function interacts with the database models and performs
+the required operations. */
 const resolvers = {
   getUserByID: async (args, context) => {
     try {
